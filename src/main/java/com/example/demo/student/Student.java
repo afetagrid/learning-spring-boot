@@ -1,5 +1,6 @@
 package com.example.demo.student;
 
+import com.example.demo.student.address.Address;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -46,24 +47,31 @@ public class Student {
             nullable = false
     )
     private LocalDate dob;
+
     @Transient
     private Integer age;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "fk_address_id")
+    private Address address;
 
 
     public Student() {
     }
 
-    public Student(Long id, String name, String email, LocalDate dob) {
+    public Student(Long id, String name, String email, LocalDate dob, Address address) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.dob = dob;
+        this.address = address;
     }
 
-    public Student(String name, String email, LocalDate dob) {
+    public Student(String name, String email, LocalDate dob, Address address) {
         this.name = name;
         this.email = email;
         this.dob = dob;
+        this.address = address;
     }
 
 
@@ -107,6 +115,13 @@ public class Student {
         this.age = age;
     }
 
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
     @Override
     public String toString() {
@@ -116,6 +131,7 @@ public class Student {
                 ", email='" + email + '\'' +
                 ", dob=" + dob +
                 ", age=" + age +
+                ", address=" + address +
                 '}';
     }
 }
