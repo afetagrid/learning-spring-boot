@@ -1,6 +1,6 @@
 package com.example.demo.student;
 
-import com.example.demo.student.address.Address;
+import com.example.demo.address.Address;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -52,9 +52,8 @@ public class Student {
     private Integer age;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "fk_address_id")
+    @JoinColumn(name = "fk_address_id", referencedColumnName = "id")
     private Address address;
-
 
     public Student() {
     }
@@ -122,6 +121,7 @@ public class Student {
     public void setAddress(Address address) {
         this.address = address;
     }
+
 
     @Override
     public String toString() {

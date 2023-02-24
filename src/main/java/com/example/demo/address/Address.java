@@ -1,6 +1,8 @@
-package com.example.demo.student.address;
+package com.example.demo.address;
 
 
+import com.example.demo.student.Student;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity(name = "Address")
@@ -23,22 +25,28 @@ public class Address {
     private String city;
     private String country;
 
+    @OneToOne(mappedBy = "address")
+    @JsonBackReference
+    private Student student;
+
     public Address() {
     }
 
-    public Address(Long id, String street, String number, String city, String country) {
+    public Address(Long id, String street, String number, String city, String country, Student student) {
         this.id = id;
         this.street = street;
         this.number = number;
         this.city = city;
         this.country = country;
+        this.student = student;
     }
 
-    public Address(String street, String number, String city, String country) {
+    public Address(String street, String number, String city, String country, Student student) {
         this.street = street;
         this.number = number;
         this.city = city;
         this.country = country;
+        this.student = student;
     }
 
     public Long getId() {
@@ -81,6 +89,14 @@ public class Address {
         this.country = country;
     }
 
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }
+
     @Override
     public String toString() {
         return "Address{" +
@@ -89,6 +105,7 @@ public class Address {
                 ", number='" + number + '\'' +
                 ", city='" + city + '\'' +
                 ", country='" + country + '\'' +
+                ", student=" + student +
                 '}';
     }
 }
