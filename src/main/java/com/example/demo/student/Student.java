@@ -1,10 +1,12 @@
 package com.example.demo.student;
 
 import com.example.demo.address.Address;
+import com.example.demo.course.Course;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.List;
 
 @Entity(name = "Student")
 @Table(
@@ -55,22 +57,32 @@ public class Student {
     @JoinColumn(name = "fk_address_id", referencedColumnName = "id")
     private Address address;
 
+    @ManyToMany
+    @JoinTable(
+            name = "student_course",
+            joinColumns = @JoinColumn(name = "fk_student_id"),
+            inverseJoinColumns = @JoinColumn(name = "fk_course_id")
+    )
+    private List<Course> courses;
+
     public Student() {
     }
 
-    public Student(Long id, String name, String email, LocalDate dob, Address address) {
+    public Student(Long id, String name, String email, LocalDate dob, Address address, List<Course> courses) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.dob = dob;
         this.address = address;
+        this.courses = courses;
     }
 
-    public Student(String name, String email, LocalDate dob, Address address) {
+    public Student(String name, String email, LocalDate dob, Address address, List<Course> courses) {
         this.name = name;
         this.email = email;
         this.dob = dob;
         this.address = address;
+        this.courses = courses;
     }
 
 
@@ -122,6 +134,13 @@ public class Student {
         this.address = address;
     }
 
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
 
     @Override
     public String toString() {
@@ -132,6 +151,7 @@ public class Student {
                 ", dob=" + dob +
                 ", age=" + age +
                 ", address=" + address +
+                ", courses=" + courses +
                 '}';
     }
 }

@@ -1,44 +1,44 @@
-package com.example.demo.school;
-
+package com.example.demo.course;
 
 import com.example.demo.student.Student;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.List;
 
-@Entity(name = "School")
-@Table(name = "schools")
-public class School {
+@Entity(name = "Course")
+@Table(name = "courses")
+public class Course {
 
     @Id
     @SequenceGenerator(
-            name = "school_sequence",
-            sequenceName = "school_sequence",
+            name = "course_sequence",
+            sequenceName = "course_sequence",
             allocationSize = 1
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "school_sequence"
+            generator = "course_sequence"
     )
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(nullable = false)
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "fk_school_id", referencedColumnName = "id")//, nullable = false)
+    @ManyToMany(mappedBy = "courses")
+    @JsonBackReference
     private List<Student> students;
 
-    public School() {
+    public Course() {
     }
 
-    public School(Long id, String name, List<Student> students) {
+    public Course(Long id, String name, List<Student> students) {
         this.id = id;
         this.name = name;
         this.students = students;
     }
 
-    public School(String name, List<Student> students) {
+    public Course(String name, List<Student> students) {
         this.name = name;
         this.students = students;
     }
@@ -69,7 +69,7 @@ public class School {
 
     @Override
     public String toString() {
-        return "School{" +
+        return "Course{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", students=" + students +

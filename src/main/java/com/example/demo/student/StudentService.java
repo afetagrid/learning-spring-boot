@@ -1,5 +1,7 @@
 package com.example.demo.student;
 
+import com.example.demo.course.Course;
+import com.example.demo.course.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,10 +14,12 @@ import java.util.Optional;
 public class StudentService {
 
     private final StudentRepository studentRepository;
+    private final CourseRepository courseRepository;
 
     @Autowired
-    public StudentService(StudentRepository studentRepository) {
+    public StudentService(StudentRepository studentRepository, CourseRepository courseRepository) {
         this.studentRepository = studentRepository;
+        this.courseRepository = courseRepository;
     }
 
     public List<Student> getStudents() {
@@ -57,5 +61,17 @@ public class StudentService {
             }
             student.setEmail(studentEmail);
         }
+    }
+
+    @Transactional
+    public void assignCourseToStudent(Long studentId, Long courseId) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new IllegalStateException("Student with id " + studentId + " doesn't exist"));
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new IllegalStateException("Course with id " + courseId + " doesn't exists"));
+
+        List <Course> courses = student.getCourses();
+        courses.add(course);
+        student.setCourses(courses);
     }
 }

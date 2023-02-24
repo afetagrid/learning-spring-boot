@@ -37,4 +37,10 @@ public class StudentController {
                               @RequestParam(required = false) String email) {
         studentService.updateStudent(studentId, name, email);
     }
+
+    @PutMapping(path = "{studentId}/course/{courseId}")
+    public void assignCourseToStudent(@PathVariable("studentId") Long studentId,
+                                       @PathVariable("courseId") Long courseId) {
+        studentService.assignCourseToStudent(studentId, courseId);
+    }
 }

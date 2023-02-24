@@ -20,8 +20,13 @@ public class Address {
             generator = "address_sequence"
     )
     private Long id;
+
+    @Column(nullable = false)
     private String street;
+
     private String number;
+
+    @Column(nullable = false)
     private String city;
     private String country;
 
